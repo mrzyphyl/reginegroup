@@ -31,6 +31,26 @@ const getMultiAccident = asyncHandler (async (req, res) => {
     res.status(200).json(accidentRecord)
 })
 
+// Get Solved Accidents
+// @route GET /api/solved-accidents
+// @access Public
+
+const getSolvedAccidents = asyncHandler(async (req, res) => {
+    const solvedAccidents = await Accident.find({ isSolved: true })
+  
+    res.status(200).json(solvedAccidents)
+})
+
+// Get Unsolved Accidents
+// @route GET /api/unsolved-accidents
+// @access Public
+
+const getUnsolvedAccidents = asyncHandler(async (req, res) => {
+    const unsolvedAccidents = await Accident.find({ isSolved: false })
+  
+    res.status(200).json(unsolvedAccidents)
+})
+
 
 //Post an Accident Report
 //@route POST /api/accident-report
@@ -64,6 +84,7 @@ const postAccident = asyncHandler (async (req, res) => {
         description,
         fatalities,
         injured,
+        isSolved: false,
         vehicle_type
     })
 
@@ -75,12 +96,38 @@ const postAccident = asyncHandler (async (req, res) => {
             description: accidentRecord.description,
             fatalities: accidentRecord.fatalities,
             injured: accidentRecord.injured,
+            isSolved: accidentRecord.isSolved,
             vehicle_type: accidentRecord.vehicle_type
         })
     } else {
         res.status(400)
         throw new Error('Cant add Accident Report')
     }
+})
+
+
+// Update an Accident Report
+// @route PUT /api/solve-accident-report/:id
+// @access Public
+
+const updateOngoingAccident = asyncHandler(async (req, res) => {
+    const accidentRecord = await Accident.findById(req.params.id)
+  
+    if (!accidentRecord) {
+        res.status(400)
+        throw new Error('Accident Report not found')
+    }
+  
+    // Update the isSolved field to true
+    accidentRecord.isSolved = true
+  
+    // Save the updated accident report
+    const updatedAccidentReport = await accidentRecord.save()
+  
+    res.status(200).json({
+      _id: updatedAccidentReport.id,
+      isSolved: updatedAccidentReport.isSolved,
+    })
 })
 
 
@@ -140,8 +187,11 @@ module.exports = {
     getAccident,
     getOneAccident,
     getMultiAccident,
+    getSolvedAccidents,
+    getUnsolvedAccidents,
     postAccident,
     updateAccident,
+    updateOngoingAccident,
     deltAccident,
     deltMultiAccident
 }

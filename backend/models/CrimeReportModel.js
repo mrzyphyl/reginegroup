@@ -17,6 +17,10 @@ const crimeSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a Value']
     },
+    isSolved: {
+        type: Boolean,
+        default: null,
+    },
     date_of_report: {
         type: Date,
         default: Date.now

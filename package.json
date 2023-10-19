@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
-    "client": "npm run dev --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "admin": "npm run dev --prefix admin",
+    "user": "npm run dev --prefix user",
+    "dev": "concurrently \"npm run server\" \"npm run admin\" \"npm run user\""
   },
   "author": "Regine",
   "license": "ISC",

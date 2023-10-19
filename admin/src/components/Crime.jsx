@@ -55,6 +55,19 @@ const Crime = () => {
     );
   });
 
+  const Checkbox = ({ checked }) => (
+    <input type="checkbox" checked={checked} disabled readOnly />
+  )
+
+  const caseClosed = ({id}) => {
+    axios.put(`http://localhost:5000/api/solved-crime/solve-crime-report/${id}`)
+    .then(result => {
+      console.log(result)
+      window.location.reload()
+    })
+    .catch(err => console.log(err));
+  }
+
   return (
     <div className="ml-8 justify-center text-4xl">
       <h1 className="font-semibold mt-4 text-white">Crime Reports</h1>
@@ -163,6 +176,9 @@ const Crime = () => {
                 Time
               </th>
               <th className="text-white text-lg font-semibold text-center">
+                Solved
+              </th>
+              <th className="text-white text-lg font-semibold text-center">
                 Action
               </th>
             </tr>
@@ -189,12 +205,31 @@ const Crime = () => {
                     day: "numeric",
                   })}
                 </td>
-                <td className="flex">
+                <td className="text-white text-md font-base text-center">
+                  <Checkbox checked={crime.isSolved} />
+                </td>
+                <td className="flex gap-2">
                   <div className="mr-1">
                     <UpdateCrime id={crime._id} />
                   </div>
-
-                  <DeleteCrime id={crime._id} />
+                  <div>
+                    <DeleteCrime id={crime._id} />
+                  </div>
+                  {crime.isSolved ? (
+                    // Hide the "Close Case" button when isSolved is checked
+                    <div>
+                      {/* No button here */}
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        onClick={() => caseClosed({ id: crime._id })}
+                        className="bg-[#5F9EA0] font-medium text-white rounded-md py-[5px] px-1"
+                      >
+                        Close the Case
+                      </button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

@@ -6,7 +6,7 @@ const {
     deltAccident,
     getOneAccident,
     deltMultiAccident,
-    getMultiAccident
+    getMultiAccident,
 } = require('../controllers/AccidentReportController')
 const router = express.Router()
 

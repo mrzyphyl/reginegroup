@@ -6,10 +6,14 @@ import './Welcome.css';
 const Welcome = () => {
   const [crimeData, setCrimeData] = useState([]);
   const [accidentData, setAccidentData] = useState([]);
+  const [solvedCrime, setSolvedCrimeData] = useState([]);
+  const [unSolvedCrime, setUnSolvedCrimeData] = useState([]);
   useEffect(() => {
     getUser();
     getCrimes()
     getAccidents()
+    getUnsolvedCrime()
+    getSolvedCrime()
   }, []);
 
   const getUser = async () => {
@@ -43,6 +47,24 @@ const Welcome = () => {
       .catch(err => console.log(err));
   };
 
+  const getUnsolvedCrime = () => {
+    axios.get(`http://localhost:5000/api/solved-crime/unsolved-crime`)
+      .then(result => {
+        console.log('Unsolved Crime:', result.data)
+        setUnSolvedCrimeData(result.data)
+      })
+      .catch(err => console.log(err));
+  }
+
+  const getSolvedCrime = () => {
+    axios.get(`http://localhost:5000/api/solved-crime/solved-crime`)
+      .then(result => {
+        console.log('Solved  Crime: ',result.data)
+        setSolvedCrimeData(result.data)
+      })
+      .catch(err => console.log(err));
+  }
+
   return (
     <main >
         <div className="welcome-container">
@@ -72,14 +94,14 @@ const Welcome = () => {
             <h3 className="text-lg font-bold">Total Crime Solved</h3>
             <BsPeopleFill className='card_icon' />
           </div>
-          <h1 className="text-2xl font-bold">159</h1>
+          <h1 className="text-2xl font-bold">{solvedCrime.length}</h1>
         </div>
         <div className='card'>
           <div className='card-inner'>
             <h3 className="text-lg font-bold">Ongoing Crimes</h3>
             <BsFillBellFill className='card_icon' />
           </div>
-          <h1 className="text-2xl font-bold">42</h1>
+          <h1 className="text-2xl font-bold">{unSolvedCrime.length}</h1>
         </div>
       </div>
       </div>

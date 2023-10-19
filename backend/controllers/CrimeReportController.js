@@ -32,6 +32,25 @@ const getMultiCrime = asyncHandler (async (req, res) => {
     res.status(200).json(crimeRecord)
 })
 
+// Get Solved Crime
+// @route GET /api/solved-accidents
+// @access Public
+
+const getSolvedCrime = asyncHandler(async (req, res) => {
+    const solvedCrime = await Crime.find({ isSolved: true })
+  
+    res.status(200).json(solvedCrime)
+})
+
+// Get Unsolved Crime
+// @route GET /api/unsolved-accidents
+// @access Public
+
+const getUnsolvedCrime = asyncHandler(async (req, res) => {
+    const unsolvedCrime = await Crime.find({ isSolved: false })
+  
+    res.status(200).json(unsolvedCrime)
+})
 
 //Post an Crime Report
 //@route POST /api/crime-report
@@ -61,6 +80,7 @@ const postCrime = asyncHandler (async (req, res) => {
         type_crime,
         name_crime,
         location,
+        isSolved: false,
         incident_date
     })
 
@@ -70,12 +90,37 @@ const postCrime = asyncHandler (async (req, res) => {
             type_crime: crimeRecord.type_crime,
             name_crime: crimeRecord.name_crime,
             location: crimeRecord.location,
+            isSolved: crimeRecord.isSolved,
             incident_date: crimeRecord.incident_date
         })
     } else {
         res.status(400)
         throw new Error('Cant add Appointment')
     }
+})
+
+// Update a Crime Report
+// @route PUT /api/solve-crime-report/:id
+// @access Public
+
+const updateOngoingCrime = asyncHandler(async (req, res) => {
+    const crimeRecord = await Crime.findById(req.params.id)
+  
+    if (!crimeRecord) {
+        res.status(400)
+        throw new Error('Accident Report not found')
+    }
+  
+    // Update the isSolved field to true
+    crimeRecord.isSolved = true
+  
+    // Save the updated crime report
+    const updatedCrimeReport = await crimeRecord.save()
+  
+    res.status(200).json({
+      _id: updatedCrimeReport.id,
+      isSolved: updatedCrimeReport.isSolved,
+    })
 })
 
 
@@ -135,8 +180,11 @@ module.exports = {
     getCrime,
     getOneCrime,
     getMultiCrime,
+    getSolvedCrime,
+    getUnsolvedCrime,
     postCrime,
     updateCrime,
+    updateOngoingCrime,
     deltCrime,
     deltMultiCrime
 }
