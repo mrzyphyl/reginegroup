@@ -2,6 +2,7 @@ import Welcome from "../components/Welcome";
 import AddAccident from "../components/accident/AddAccident";
 import AddCrime from "../components/crimes/AddCrime";
 import { useNavigate } from "react-router-dom";
+import './Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate("/");
@@ -17,22 +18,19 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen">
-      <div className="flex justify-between p-2">
-        <div>
-          <Welcome />
-        </div>
-        <div>
-          <button
-            onClick={handleLogout}
-            className="border rounded w-[200px] m-2 px-4 py-2 bg-red-500 text-white hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div>
+    <div className="dashboard-container">
+      <div className="header">
+        <h1 className="header-title">Dagupan Crime Report</h1>
+        <button
+          onClick={handleLogout}
+          className="user-dashboard-logout"
+        >
+          Logout
+        </button>
       </div>
-
-      <div className="flex flex-col gap-3 p-5 flex-grow">
+      
+      <Welcome/>
+      <div className="content">
         <AddAccident className="flex-grow" />
         <AddCrime className="flex-grow" />
       </div>

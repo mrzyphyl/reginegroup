@@ -1,7 +1,6 @@
-"use client";
-
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import './AddAccident.css';
 
 const AddAccident = () => {
   const [date, setDate] = useState("");
@@ -11,10 +10,13 @@ const AddAccident = () => {
   const [injured, setInjured] = useState("");
   const [vehicle_type, setVehicleType] = useState("");
   const [modal, setModal] = useState(false);
-  const locationOptions = ["Bacayao Norte", "Bacayao Sur","Bolosan","Bonuan Binloc","Bonuan Boquig"," Bonuan Gueset"," Calmay","Carael","Caranglaan","Herrero","Lasip Chico","Lasip Grande"," Lomboy","Lucao"," Malued","Mamalingling"," Mangin","Mayombo","Pantal","Poblacion Oeste","Pogo Chico","Pogo Grande","Pugaro Suit","Salapingao", "Salisay","Tambac","Tapuac","Tebeng"];
-  const vehicleTypeOptions = [ "Van","Car","Motorcycle","Truck","Bus","Jeep","Bicycle"];
-  const handleSubmit = () => {
-    //const token = localStorage.getItem("token");
+  const locationOptions = ["Bacayao Norte", "Bacayao Sur", "Bolosan", "Bonuan Binloc", "Bonuan Boquig", "Bonuan Gueset", "Calmay", "Carael", "Caranglaan", "Herrero", "Lasip Chico", "Lasip Grande", "Lomboy", "Lucao", "Malued", "Mamalingling", "Mangin", "Mayombo", "Pantal", "Poblacion Oeste", "Pogo Chico", "Pogo Grande", "Pugaro Suit", "Salapingao", "Salisay", "Tambac", "Tapuac", "Tebeng"];
+  const vehicleTypeOptions = ["Van", "Car", "Motorcycle", "Truck", "Bus", "Jeep", "Bicycle"];
+  const descriptionOptions = ["asdadsad"]; 
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // const token = localStorage.getItem("token");
     axios.post(
       `http://localhost:5000/api/accident-report`,
       {
@@ -31,10 +33,10 @@ const AddAccident = () => {
       //   },
       // }
     )
-    .then(result => {
-      console.log(result)
-    })
-    .catch(err => console.log(err))
+      .then(result => {
+        console.log(result);
+      })
+      .catch(err => console.log(err));
     setModal(false);
   };
 
@@ -44,7 +46,7 @@ const AddAccident = () => {
 
   return (
     <div>
-      <button className="w-full btn btn-primary text-white" onClick={handleChange}>
+      <button className="accident-report-button" onClick={handleChange}>
         Report an Accident
       </button>
 
@@ -76,13 +78,18 @@ const AddAccident = () => {
             </div>
             <div className="form-control">
               <label className="label font-bold text-sm">Description</label>
-              <input
-                type="text"
+              <select
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="input w-full input-bordered"
-                placeholder="Enter a short description"
-              />
+              >
+                <option value="">Select a description</option>
+                {descriptionOptions.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-control">
               <label className="label font-bold text-sm">Death</label>
@@ -105,7 +112,7 @@ const AddAccident = () => {
               />
             </div>
             <div className="form-control">
-              <label className="label font-bold text-sm">Vechicle Type</label>
+              <label className="label font-bold text-sm">Vehicle Type</label>
               <select
                 value={vehicle_type}
                 onChange={(e) => setVehicleType(e.target.value)}

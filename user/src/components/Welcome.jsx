@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsFillBellFill } from 'react-icons/bs';
+import './Welcome.css';
 
 const Welcome = () => {
   const [crimeData, setCrimeData] = useState([]);
@@ -44,9 +45,13 @@ const Welcome = () => {
 
   return (
     <main >
-        
-      <h3 className="text-5xl font-bold">Hello there, report a crime today to make the community safer!</h3>
-
+        <div className="welcome-container">
+        <h3 className="welcome-text">
+  Hello there, report a crime today <br /> 
+  to make the community safer!
+</h3>
+</div>
+    <div className="user-card-container">
       <div className='main-cards'>
         <div className='card'>
           <div className='card-inner'>
@@ -77,7 +82,9 @@ const Welcome = () => {
           <h1 className="text-2xl font-bold">42</h1>
         </div>
       </div>
+      </div>
     </main>
+    
   );
 };
 

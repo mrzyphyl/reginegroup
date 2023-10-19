@@ -1,18 +1,18 @@
-"use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import './AddCrime.css';
 
 const AddCrime = () => {
   const [nameCrime, setNameCrime] = useState("");
   const [typeCrime, setTypeCrime] = useState("");
   const [location, setLocation] = useState("");
-  const [incidentDate, setIncedentDate] = useState("");
+  const [incidentDate, setIncidentDate] = useState("");
   const [modal, setModal] = useState(false);
-  const locationOptions = ["Bacayao Norte", "Bacayao Sur","Bolosan","Bonuan Binloc","Bonuan Boquig"," Bonuan Gueset"," Calmay","Carael","Caranglaan","Herrero","Lasip Chico","Lasip Grande"," Lomboy","Lucao"," Malued","Mamalingling"," Mangin","Mayombo","Pantal","Poblacion Oeste","Pogo Chico","Pogo Grande","Pugaro Suit","Salapingao", "Salisay","Tambac","Tapuac","Tebeng"];
-  const crimeTypeOptions = ["Murder","Theft","Drug trafficking","Kidnapping","Identity Theft","Child Abuse","Rape","Assault","Cyber Crime","Violence","Sexual Assault","Fraud","Burglary"  ];
+  const locationOptions = ["Bacayao Norte", "Bacayao Sur", "Bolosan", "Bonuan Binloc", "Bonuan Boquig", "Bonuan Gueset", "Calmay", "Carael", "Carangaan", "Herrero", "Lasip Chico", "Lasip Grande", "Lomboy", "Lucao", "Malued", "Mamalingling", "Mangin", "Mayombo", "Pantal", "Poblacion Oeste", "Pogo Chico", "Pogo Grande", "Pugaro Suit", "Salapingao", "Salisay", "Tambac", "Tapuac", "Tebeng"];
+  const crimeTypeOptions = ["Murder", "Theft", "Drug trafficking", "Kidnapping", "Identity Theft", "Child Abuse", "Rape", "Assault", "Cyber Crime", "Violence", "Sexual Assault", "Fraud", "Burglary"];
+  const crimeOptions = ["Nagnakaw siya ng bag", "Pumatay siya ng Bata", "Kumuha siya ng Ballpen"];
 
   async function handleSubmit() {
-    // const token = localStorage.getItem("token");
     await axios.post(
       `http://localhost:5000/api/crime-report`,
       {
@@ -20,19 +20,12 @@ const AddCrime = () => {
         type_crime: typeCrime,
         location: location,
         incident_date: incidentDate,
-      },
-      // {
-      //   headers: {
-      //     Authorization: `${token}`,
-      //   },
-      // }
+      }
     )
-    .then(result => {
-      console.log(result)
-    })
-    .catch(err => console.log(err))
-    setModal(false);
-
+      .then(result => {
+        console.log(result)
+      })
+      .catch(err => console.log(err))
     setModal(false);
   }
 
@@ -42,7 +35,7 @@ const AddCrime = () => {
 
   return (
     <div>
-      <button className="w-full btn btn-primary text-white" onClick={handleChange}>
+      <button className="crime-report-button" onClick={handleChange}>
         Report a Crime
       </button>
 
@@ -59,13 +52,18 @@ const AddCrime = () => {
           <form onSubmit={handleSubmit}>
             <div className="form-control">
               <label className="label font-bold text-sm">Crime</label>
-              <input
-                type="text"
+              <select
                 value={nameCrime}
                 onChange={(e) => setNameCrime(e.target.value)}
                 className="input w-full input-bordered"
-                placeholder="Enter a crime"
-              />
+              >
+                <option value="">Select a crime</option>
+                {crimeOptions.map((option, index) => (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-control">
               <label className="label font-bold text-sm">Crime Type</label>
@@ -102,7 +100,7 @@ const AddCrime = () => {
               <input
                 type="date"
                 value={incidentDate}
-                onChange={(e) => setIncedentDate(e.target.value)}
+                onChange={(e) => setIncidentDate(e.target.value)}
                 className="input w-full input-bordered"
                 placeholder="Enter a date"
               />
